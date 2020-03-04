@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <section class="page-section bg-dark h-100" id="createAccount">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h2 class="text-white mt-4">Créer un compte</h2>
+          <hr class="divider light my-4">
+          <form action="" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="form-group pt-2 pt-lg-4">
+                  <div class="text-danger">{{ field.errors }}</div>
+                  <div class="font-bold text-white h5">{{ field.label_tag }}</div>
+                  {{ field }}
+                  {% if field.help_text %}
+                  <div class="font-italic text-light">{{ field.help_text|safe }}</div>
+                  {% endif %}
+              </div>
+          {% endfor %}
+            <button type="submit" class="btn btn-success">Créer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

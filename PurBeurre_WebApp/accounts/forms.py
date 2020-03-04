@@ -20,15 +20,13 @@ class CustomUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("email",)
+        fields = ("username", "email", "first_name")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs["class"] = "form-control"
-        self.fields["email"].widget.attrs["required"] = ""
-        for field in self.fields.values():
-            print(field.widget)
+        self.fields["email"].widget.attrs["required"] = True
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -52,7 +50,8 @@ class CustomUserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = User.objects.create_user(
+            self.cleaned_data["username"],
             self.cleaned_data["email"],
-            self.cleaned_data["email"],
-            self.cleaned_data["password1"])
+            self.cleaned_data["password1"],
+            first_name=self.cleaned_data["first_name"])
         return user

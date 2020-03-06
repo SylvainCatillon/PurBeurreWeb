@@ -33,5 +33,5 @@ def create(request):
 
 def my_account(request):
     if request.user.is_authenticated:
-        return render(request, "accounts/my_account.html", {"user": request.user})
-    return redirect("accounts:create")
+        return render(request, "accounts/my_account.html")
+    return redirect("accounts:login")

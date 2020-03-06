@@ -46,13 +46,13 @@
             </form>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="" title="Mon compte"><i class="fas fa-user"></i></a>
+            <a class="nav-link js-scroll-trigger" {% if request.user.is_authenticated %}href="{% url 'accounts:my_account' %}" title="Mon compte"{% else %}href="{% url 'accounts:create' %}" title="Créer un compte"{% endif %}><i class="fas fa-user"></i></a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="">Mes aliments</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="" title="Déconnexion"><i class="fas fa-sign-out-alt"></i></a>
+            <a class="nav-link js-scroll-trigger" {% if request.user.is_authenticated %}href="{% url 'accounts:logout' %}" title="Déconnexion"><i class="fas fa-sign-out-alt"{% else %}href="{% url 'accounts:login' %}" title="Connexion"><i class="fas fa-sign-in-alt"{% endif %}></i></a>
           </li>
         </ul>
       </div>

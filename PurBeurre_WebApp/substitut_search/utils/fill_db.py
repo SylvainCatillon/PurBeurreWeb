@@ -2,12 +2,15 @@ import requests
 
 from django.db import IntegrityError, DataError, transaction
 
-from .models import Product
+from ..models import Product
 
 class FillDB:
     """Use this class to download products from fr.openfoodfacts.org
     and fill the database"""
     NB_PRODUCTS = 2223
+
+    def __init__(self, nb_products=1000):
+        self.nb_products = nb_products
 
     def dl_page(self, nb, page):
         payload = {
@@ -24,7 +27,7 @@ class FillDB:
     def dl_products(self):
         # while nb_products > 1000: req 1000 nb-=1000 page+=1
         products_list = []
-        nb_products = self.NB_PRODUCTS
+        nb_products = self.nb_products
         page = 1
         while nb_products > 1000:
             products_list += self.dl_page(1000, page)
@@ -48,8 +51,8 @@ class FillDB:
                 link = product["url"]
                 image = product["image_front_url"]
             except KeyError as error:
-                print(error)
-                print("The product doesn't contain the needed informations")
+                #print(error)
+                #print("The product doesn't contain the needed informations")
                 continue
             try:
                 with transaction.atomic():
@@ -58,6 +61,7 @@ class FillDB:
                         categories=categories,
                         name=name, link=link, image=image)
             except (IntegrityError, DataError) as error:
-                print(error)
+                #print(error)
                 continue
-        print(str(Product.objects.count()+" products in the database"))
+        #print(str(Product.objects.count())+" products in the database")
+        return Product.objects.count()

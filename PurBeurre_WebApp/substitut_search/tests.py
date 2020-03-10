@@ -4,7 +4,7 @@ from unittest import skip
 import pdb
 
 from .models import Product
-from .fill_db import FillDB
+from .utils.fill_db import FillDB
 
 
 

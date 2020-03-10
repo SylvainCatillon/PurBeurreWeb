@@ -8,3 +8,6 @@ class Product(models.Model):
     name = models.CharField(max_length=200, unique=True)
     image = models.URLField()
     link = models.URLField(unique=True)
+
+    def __str__(self):
+        return self.name

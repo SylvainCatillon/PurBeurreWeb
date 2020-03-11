@@ -42,14 +42,14 @@ class FillDB:
             try:
                 nutriscore = product["nutrition_grade_fr"].lower()
                 categories = product["categories_tags"] # filtrer les cat qui commencent pas par en:?
-                name = product["product_name"]
-                # If there is brands indicated for the product, the first of
-                # them will be used to complement the name of the product
-                brands = product.get("brands")
-                if brands:
-                    name += " " + brands.split(",")[0]
+                name = product["product_name"].title()
+                """# If there is brands indicated for the product, the first of
+                    # them will be used to complement the name of the product
+                    brands = product.get("brands")
+                    if brands:
+                        name += " " + brands.split(",")[0]"""
                 link = product["url"]
-                image = product["image_front_url"]
+                image = product["image_front_small_url"]
             except KeyError as error:
                 #print(error)
                 #print("The product doesn't contain the needed informations")
@@ -64,4 +64,3 @@ class FillDB:
                 #print(error)
                 continue
         #print(str(Product.objects.count())+" products in the database")
-        return Product.objects.count()

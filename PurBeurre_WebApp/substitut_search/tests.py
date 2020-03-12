@@ -89,3 +89,30 @@ class TestSearchProduct(TestCase):
         self.assertLess(
             response.context['products'][0].nutriscore, product.nutriscore)
 
+class TestProductPage(TestCase):
+    MOCK_PRODUCTS = [
+        {"nutrition_grade_fr": "a",
+        "categories_tags": ["en:test"],
+        "product_name": "test1",
+        "url": "https//test.com",
+        "image_front_small_url": "https//test.com"}
+    ]
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        fill_db = FillDB()
+        fill_db.dl_products = Mock(return_value=cls.MOCK_PRODUCTS)
+        fill_db.insert_products()
+
+    # test product page contains the required informations    
+    def test_product_page(self):
+        product = Product.objects.get(
+            name=self.MOCK_PRODUCTS[0]["product_name"].title())
+        product_id = product.id
+        response = self.client.get(
+            f"{reverse('substitut:detail')}?product_id={product_id}")
+        self.assertContains(response, product.name)
+        self.assertContains(response, product.nutriscore)
+        self.assertContains(response, product.link)
+        self.assertContains(response, product.nutr_values)

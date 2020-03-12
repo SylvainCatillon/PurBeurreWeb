@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-section bg-primary min-vh-100" id="detail">
+  {% include 'substitut_search/product_banner.html' %}
+  <div class="container">
+    <div class="row text-center justify-content-around">
+      <div class="col-5 rounded bg-secondary h4 my-5">Nutriscore<br>
+        {% with 'substitut_search/img/nutriscores/'|add:product.nutriscore|add:'.jpg' as nutriscore_img %}
+        <img class="my-2 img-fluid" src="{% static nutriscore_img %}" alt="{{ product.nutriscore }}">
+        {% endwith %}
+      </div>
+      <div class="col-5 rounded bg-secondary h4 my-5">Valeurs nutritionels pour 100g</div>
+    </div>
+    <div class="row text-center justify-content-around">
+      <a class="col-6 btn btn-dark mt-3" href="{{ product.link }}">Voir la fiche d'OpenFoodFacts</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

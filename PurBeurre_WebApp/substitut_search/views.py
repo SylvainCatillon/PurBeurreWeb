@@ -34,4 +34,13 @@ def find(request):
     #         e_point = point + abs(ord(e.nutriscore)-(97+5))
     #         unorded_substitutes.append((e_point, e))
     # substituts = sorted(unorded_substitutes, reverse=True)[:max_sbts]
-    return render(request, "substitut_search/search.html", {"products": substituts})
+    context = {
+    "initial_product": product,
+    "products": substituts
+    }
+    return render(request, "substitut_search/find.html", context)
+
+def detail(request):
+    product_id = request.GET.get("product_id")
+    product = Product.objects.get(id=product_id)
+    return render(request, "substitut_search/detail.html", {"product": product})

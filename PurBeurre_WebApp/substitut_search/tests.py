@@ -44,7 +44,6 @@ class TestFillDB(TestCase):
         self.assertEqual(Product.objects.count(), 0)
         fill_db = FillDB()
         result = fill_db.insert_products()
-        pdb.set_trace()
         self.assertGreater(Product.objects.count(), 200)
 
 class TestSearchProduct(TestCase):
@@ -81,3 +80,12 @@ class TestSearchProduct(TestCase):
             f"{reverse('substitut:search')}?query={query}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["products"]), test_products)
+
+    # test if the founded substitut has a better nutriscore and is in the same category
+    def test_find_a_substitut(self):
+        product = Product.objects.order_by('-nutriscore')[0]
+        response = self.client.get(
+            f"{reverse('substitut:find')}?product_id={product.id}")
+        self.assertLess(
+            response.context['products'][0].nutriscore, product.nutriscore)
+

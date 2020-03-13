@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Product
 
@@ -12,7 +12,7 @@ def search(request):
 
 def find(request):
     product_id = request.GET.get("product_id")
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product, id=product_id)
     substituts = []
     max_sbts = 12 # fichier de config?
     for category in reversed(product.categories):
@@ -42,5 +42,5 @@ def find(request):
 
 def detail(request):
     product_id = request.GET.get("product_id")
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product, id=product_id)
     return render(request, "substitut_search/detail.html", {"product": product})

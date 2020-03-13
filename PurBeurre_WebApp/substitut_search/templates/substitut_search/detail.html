@@ -6,12 +6,19 @@
   {% include 'substitut_search/product_banner.html' %}
   <div class="container">
     <div class="row text-center justify-content-around">
-      <div class="col-5 rounded bg-secondary h4 my-5">Nutriscore<br>
+      <div class="col-5 rounded bg-light h4 my-5">Nutriscore<br>
         {% with 'substitut_search/img/nutriscores/'|add:product.nutriscore|add:'.jpg' as nutriscore_img %}
-        <img class="my-2 img-fluid" src="{% static nutriscore_img %}" alt="{{ product.nutriscore }}">
+        <img class="my-2 img-fluid mt-3" src="{% static nutriscore_img %}" alt="{{ product.nutriscore }}">
         {% endwith %}
       </div>
-      <div class="col-5 rounded bg-secondary h4 my-5">Valeurs nutritionels pour 100g</div>
+      {% if product.nutrient_levels %}
+      <div class="col-5 rounded bg-light my-5">
+        <h4 class="mb-lg-3">Repères nutritionels pour 100g:</h4>
+        {% for sentence in product.nutrient_levels %}
+          <p>{{ sentence }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
     <div class="row text-center justify-content-around">
       <a class="col-6 btn btn-dark mt-3" href="{{ product.link }}">Voir la fiche d'OpenFoodFacts</a>

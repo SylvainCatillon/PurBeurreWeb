@@ -3,6 +3,6 @@
 {% block content %}
 <section class="page-section bg-primary min-vh-100" id="find">
   {% include 'substitut_search/product_banner.html' with product=initial_product %}
-  {% include 'substitut_search/products_display.html' with title='Vous pouvez remplacer cet aliment par:' button_title='Voir le produit' action='substitut:detail' %}
+  {% include 'substitut_search/products_display.html' with title='Vous pouvez remplacer cet aliment par:' button_title='Voir le produit' action='substitut:detail' save=True %}
 </section>
 {% endblock %}

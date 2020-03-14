@@ -12,3 +12,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class Favory(models.Model):
+    user_profile = models.ForeignKey('accounts.Profile', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    saved_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.product.name

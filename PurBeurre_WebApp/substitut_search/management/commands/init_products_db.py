@@ -11,8 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         old_count = Product.objects.count()
-        for product in Product.objects.all():
-            product.delete()
+        Product.objects.all().delete()
         count = Product.objects.count()
         if count == 0:
             self.stdout.write(self.style.SUCCESS(

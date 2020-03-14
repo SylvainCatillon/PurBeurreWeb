@@ -2,6 +2,6 @@
 
 {% block content %}
 <section class="page-section bg-primary min-vh-100" id="search">
-  {% include 'substitut_search/products_display.html' with title='Sélectionnez un aliment à remplacer:' button_title='Choisir' action='substitut:find' %}
+  {% include 'substitut_search/products_display.html' with title='Sélectionnez un aliment à remplacer:' button_title='Choisir' action='substitut:find' save=False %}
 </section>
 {% endblock %}

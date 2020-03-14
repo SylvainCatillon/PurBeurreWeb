@@ -5,12 +5,6 @@ from django.contrib.auth.forms import UserCreationForm
 
 from .forms import CustomUserCreationForm
 
-# class CustomUserCreationForm(UserCreationForm):
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         for field in self.fields.values():
-#             field.widget.attrs["class"] = "form-control"
 
 def create(request):
     if request.method == "POST":

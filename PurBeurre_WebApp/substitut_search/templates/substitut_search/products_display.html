@@ -13,6 +13,17 @@
           <input type="hidden" class="hidden" value="{{ product.id }}" name="product_id">
           <button type="submit" class="btn btn-primary">{{ button_title }}</button>
         </form>
+        {% if user.is_authenticated and save %}
+          {% if product in user.profile.favories.all %}
+          <p>Produit déjà sauvé</p>
+          {% else %}
+          <form id="save_form" class="form-inline" action="{% url 'substitut:favories' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" class="hidden" value="{{ product.id }}" name="product_id">
+            <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-save mr-3"></i>Sauvegarder</button>
+          </form>
+          {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>

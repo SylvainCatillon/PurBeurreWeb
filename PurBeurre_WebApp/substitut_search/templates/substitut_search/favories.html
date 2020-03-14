@@ -1,0 +1,8 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<!-- include user_banner -->
+<section class="page-section bg-primary min-vh-100" id="find">
+  {% include 'substitut_search/products_display.html' with title='Voici vos produits enregistrés:' button_title='Voir le produit' action='substitut:detail' save=False %}
+</section>
+{% endblock %}

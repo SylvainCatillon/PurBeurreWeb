@@ -1,12 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from unittest.mock import Mock
 from unittest import skip
 
 import pdb
 
-from .models import Product
+from .models import Product, Favory
 from .utils.fill_db import FillDB
 
 nutrients = ['fat','saturated-fat','sugars','salt']
@@ -28,8 +29,7 @@ MOCK_PRODUCTS = [
 class TestFillDB(TestCase):
 
     def tearDown(self):
-        for product in Product.objects.all():
-                product.delete()
+        Product.objects.all().delete()
 
     def test_insert_products(self):
         self.assertEqual(Product.objects.count(), 0)
@@ -113,3 +113,56 @@ class TestProductPage(TestCase):
         self.assertContains(response, product.link)
         for level in product.nutrient_levels:
             self.assertContains(response, level)
+
+
+class TestFavories(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user_info = {
+                "username": "test_user",
+                "email": "user@test.com",
+                "password": "test_user_password",
+                "first_name": "Paul"}
+        cls.user = User.objects.create_user(**cls.user_info)
+        fill_db = FillDB()
+        fill_db.dl_products = Mock(return_value=MOCK_PRODUCTS)
+        fill_db.insert_products() 
+        cls.product = Product.objects.get(
+            name=MOCK_PRODUCTS[0]["product_name"].title())
+
+    def setUp(self):
+        self.client.login(
+            username=self.user.username, password=self.user_info["password"])
+
+    def tearDown(self):
+        Favory.objects.all().delete()
+
+    # test a loged user see the button "save" and an unloged don't
+    def test_save_button(self):
+        product = Product.objects.order_by('-nutriscore')[0]
+        response = self.client.get(
+            f"{reverse('substitut:find')}?product_id={product.id}")
+        self.assertContains(response, 'id="save_form"')
+        self.client.logout()
+        response = self.client.get(
+            f"{reverse('substitut:find')}?product_id={product.id}")
+        self.assertNotContains(response, 'id="save_form"')
+
+    # test a favory is saved
+    def test_save_favory(self):
+        product_id = self.product.id
+        response = self.client.post(
+            reverse("substitut:favories"), {"product_id": product_id})
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            list(self.user.profile.favories.all()), ['<Product: Test1>'])
+
+    # test a user can see his favories
+    def test_see_favories(self):
+        self.user.profile.favories.add(self.product)
+        response = self.client.get(reverse("substitut:favories"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.product.name)
+

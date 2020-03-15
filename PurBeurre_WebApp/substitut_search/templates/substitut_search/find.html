@@ -6,3 +6,28 @@
   {% include 'substitut_search/products_display.html' with title='Vous pouvez remplacer cet aliment par:' button_title='Voir le produit' action='substitut:detail' save=True %}
 </section>
 {% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript">
+    $(function() {
+
+      $(".save_form").on("submit", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var $form = $( this ),
+          data = $form.serialize(),
+          url = $form.attr("action");
+
+        var posting = $.post(url, data);
+
+        posting.done(function(msg) {
+            // remplacer form par save_div
+            $form.empty().append($("<p></p>", {
+            text: msg
+          }))
+        });
+      });
+    });
+  </script>
+{% endblock %}

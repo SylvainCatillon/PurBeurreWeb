@@ -144,11 +144,12 @@ class TestFavories(TestCase):
         product = Product.objects.order_by('-nutriscore')[0]
         response = self.client.get(
             f"{reverse('substitut:find')}?product_id={product.id}")
-        self.assertContains(response, 'id="save_form"')
+        self.assertContains(response, 'class="save_form')
         self.client.logout()
         response = self.client.get(
             f"{reverse('substitut:find')}?product_id={product.id}")
-        self.assertNotContains(response, 'id="save_form"')
+        # save_form contenu dans le script js
+        self.assertNotContains(response, 'class="save_form')
 
     # test a favory is saved
     def test_save_favory(self):
@@ -165,4 +166,3 @@ class TestFavories(TestCase):
         response = self.client.get(reverse("substitut:favories"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.product.name)
-

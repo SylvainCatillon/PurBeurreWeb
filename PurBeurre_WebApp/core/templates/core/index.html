@@ -17,7 +17,7 @@
         <form class="col-lg-8 align-self-baseline" action="{% url 'substitut:search' %}" method="get" accept-charset="utf-8">
           <div class="form-row align-items-center justify-content-center">
             <div class="form-group col-8">
-              <input id="searchForm" class="form-control form-control-lg" name="query" placeholder="Produit">
+              <input id="searchForm" class="form-control form-control-lg mt-3" name="query" placeholder="Produit">
             </div>
             <button type="submit" class="btn btn-lg btn-primary col-4">Chercher</button>
           </div>
@@ -30,16 +30,22 @@
   <section class="page-section bg-primary" id="about">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
-          <h2 class="text-white mt-0">Colette et Remy</h2>
+        <div class="col-lg-8">
+          <h2 class="text-white mt-0 text-center">Colette et Remy</h2>
           <hr class="divider light my-4">
-          <p class="text-white-50 mb-4">Pur Beurre est l'initiative de deux amoureux de la gastronomie française, Colette Tatou et Rémy, que vous avez déjà certainement rencontrés dans notre excellent restaurant Ratatouille.</p>
-          <!-- PHOTOS ET TEXTE COLETTE ET REMI. 2 Col, 1 sur mobile -->
+          <p class="text-white mb-4 text-justify">Pur Beurre est l'initiative de deux amoureux de la gastronomie française, Colette Tatou et Rémy, que vous avez déjà certainement rencontrés dans notre excellent restaurant Ratatouille.<br><br>
+          Travaillant quotidiennement avec les meilleurs produits du terroir, ils affectionnent particulièrement la bonne chaire et aiment partager leur passion. Il est donc normal que Remy ait sauté au plafond quand Colette, un jour de déprime, sortit du placard un kilo de Nutella et l’attaqua à la petite cuillère. Pourquoi ne pas opter pour une pâte à tartiner aux noisettes, plus consistante et moins sucrée ? Pourquoi, oh pourquoi s’infliger une telle souffrance ? Rémy était sidéré. La réponse de Colette fut simple : elle n’avait pas trouvé de substitut assez convainquant. A vrai dire, elle n’avait même pas cherché.</p>
         </div>
       </div>
-      <div class="row justify-content-center">
-          <img class="img-fluid img-thumbnail rounded-circle col-12 col-md-6" src="{% static 'core/img/colette-tatou-full.png' %}" alt="Collete Tatou">
-          <img class="img-fluid img-thumbnail rounded-circle col-12 col-md-6" src="{% static 'core/img/ratatouille-portrait.jpg' %}" alt="Ratatouille">
+      <div class="row justify-content-center mt-md-4">
+        <div class="col-12 col-md-6">
+          <img class="img-fluid rounded-circle" src="{% static 'core/img/colette.jpg' %}" alt="Colette">
+          <p class="mt-3 text-white"><b>Colette Tatou</b> : "<i>Nous aimons tous manger, surtout en France ! Personnellement, une baguette fraîche, du bon fromage de chèvre et un bon vin rouge me suffisent amplement. Comme tout le monde, je fais mes courses au supermarché. Mais petit à petit je me suis rendue compte, surtout lorsque nous avons ouvert le restaurant, que je pouvais remplacer les produits aseptisés que j'avais l'habitude d'acheter par de bons produits du terroir. Et souvent pour le même prix !</i>"</p>
+        </div>
+        <div class="col-12 col-md-6">
+          <img class="img-fluid rounded-circle" src="{% static 'core/img/remy.jpg' %}" alt="Remy">
+          <p class="mt-3 text-white"><b>Remy</b> : "<i>Pour ma part je me rendais déjà dans bien des magasins car j'aime beaucoup me balader, surtout dans les caves et les cuisines. Je connaissais par coeur le contenu des boutiques bio (dont je raffole) ainsi que les ingrédients de tous les aliments vendus. Lorsque Colette m'a demandé si elle pouvait remplacer son Nutella matinal par un aliment plus sain, je savais tout de suite où le trouver. L'idée de Pur Beurre était née !</i>"</p>
+        </div>
       </div>
     </div>
   </section>

@@ -29,47 +29,13 @@
 <body id="page-top">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="{% url 'index' %}">
-        <img class="ml-auto mr-2" src="{% static 'core/img/logo_pur_beurre.png' %}" width="50" height="40" alt="Site logo">Pur Beurre</a>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto my-2 my-lg-0">
-          <li class="nav-item">
-            <form class="form-inline" action="{% url 'substitut:search' %}" method="get" accept-charset="utf-8">
-              <div class="form-group">
-                <input id="searchForm" class="form-control form-control-sm" name="query" placeholder="Chercher" style="background: silver;">
-              </div>
-            </form>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" {% if request.user.is_authenticated %}href="{% url 'accounts:my_account' %}" title="Mon compte"{% else %}href="{% url 'accounts:create' %}" title="Créer un compte"{% endif %}><i class="fas fa-user"></i></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="">Mes aliments</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" {% if request.user.is_authenticated %}href="{% url 'accounts:logout' %}" title="Déconnexion"><i class="fas fa-sign-out-alt"{% else %}href="{% url 'accounts:login' %}" title="Connexion"><i class="fas fa-sign-in-alt"{% endif %}></i></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  {% block nav %}{% include 'core/nav.html' %}{% endblock %}
 
+  <!-- Content -->
   {% block content %}{% endblock %}
 
   <!-- Footer -->
-  <footer class="bg-light py-2">
-    <div class="container">
-      <div class="row">
-        <div class="col-6 text-center"><a href="">Mentions légales</a></div>
-        <div class="col-6 text-center"><a href="">Contact</a></div>
-      </div>
-    </div>
-  </footer>
+  {% block footer %}{% include 'core/footer.html' %}{% endblock %}
 
   {% block js %}
   <!-- Bootstrap core JavaScript -->

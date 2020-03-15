@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseForbidden
 
-from .models import Product, Favory
+from .models import Product
 
 def search(request):
     query = request.GET.get("query")
@@ -48,14 +49,14 @@ def detail(request):
 def favories(request):
     user = request.user
     if not user.is_authenticated:
-        return # error? 404?
+        return HttpResponseForbidden()
     if request.method == "POST":
         product_id = request.POST.get('product_id')
         product = get_object_or_404(Product, id=product_id)
         user.profile.favories.add(product)
         # render page favories ou same page avec message?
         # interaction ajax pour alert "produit enregistré"
-    
+        return HttpResponse("Produit sauvegardé")
     products = user.profile.favories.all()
     return render(
         request, "substitut_search/favories.html", {'products': products})

@@ -5,10 +5,8 @@ from django.contrib.auth.models import User
 from unittest.mock import Mock
 from unittest import skip
 
-import pdb
-
-from .models import Product, Favory
-from .utils.fill_db import FillDB
+from ..models import Product, Favory
+from ..utils.fill_db import FillDB
 
 nutrients = ['fat','saturated-fat','sugars','salt']
 MOCK_PRODUCTS = [
@@ -28,9 +26,7 @@ MOCK_PRODUCTS = [
 
 class TestFillDB(TestCase):
 
-    def tearDown(self):
-        Product.objects.all().delete()
-
+    # test insert mocked products
     def test_insert_products(self):
         self.assertEqual(Product.objects.count(), 0)
         fill_db = FillDB()
@@ -41,6 +37,7 @@ class TestFillDB(TestCase):
             list(Product.objects.all()),
             ['<Product: Test1>','<Product: Test2>'])
 
+    # test download and insert products
     @skip("very long test using API call")
     def test_insert_products_no_mock(self):
         self.assertEqual(Product.objects.count(), 0)
@@ -50,21 +47,14 @@ class TestFillDB(TestCase):
 
 class TestSearchProduct(TestCase):
     
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         fill_db = FillDB()
         fill_db.dl_products = Mock(return_value=MOCK_PRODUCTS)
         fill_db.insert_products()
-    
-    @classmethod
-    def tearDownClass(cls):
-        for product in Product.objects.all():
-                product.delete()
-        super().tearDownClass()
 
-    # test find a product by name
+    # test search a product by name
     def test_find_a_product(self):
         # count how many product the search should find
         query = "test"
@@ -77,6 +67,13 @@ class TestSearchProduct(TestCase):
             f"{reverse('substitut:search')}?query={query}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["products"]), test_products)
+
+    # test search empty query
+    def test_empty_query(self):
+        response = self.client.get(
+            f"{reverse('substitut:search')}?query=")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["products"]), len(MOCK_PRODUCTS))
 
     # test if the founded substitut has a better nutriscore and is in the same category
     def test_find_a_substitut(self):
@@ -94,12 +91,6 @@ class TestProductPage(TestCase):
         fill_db = FillDB()
         fill_db.dl_products = Mock(return_value=MOCK_PRODUCTS[:1])
         fill_db.insert_products()
-
-    @classmethod
-    def tearDownClass(cls):
-        for product in Product.objects.all():
-                product.delete()
-        super().tearDownClass()
 
     # test product page contains the required informations    
     def test_product_page(self):
@@ -136,9 +127,6 @@ class TestFavories(TestCase):
         self.client.login(
             username=self.user.username, password=self.user_info["password"])
 
-    def tearDown(self):
-        Favory.objects.all().delete()
-
     # test a loged user see the button "save" and an unloged don't
     def test_save_button(self):
         product = Product.objects.order_by('-nutriscore')[0]
@@ -166,3 +154,9 @@ class TestFavories(TestCase):
         response = self.client.get(reverse("substitut:favories"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.product.name)
+
+    # test an unlogged user can't see his favories
+    def test_see_favories_unlogged_user(self):
+        self.client.logout()
+        response = self.client.get(reverse("substitut:favories"))
+        self.assertEqual(response.status_code, 403)

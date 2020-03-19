@@ -5,6 +5,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserCreationForm(forms.ModelForm):
+    """Customisation of the django UserCreationForm
+    fields = username, email, fisrt_name (not required),
+    password1 and password2 (for password confirmation)"""
+
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
@@ -29,12 +33,13 @@ class CustomUserCreationForm(forms.ModelForm):
         self.fields["email"].widget.attrs["required"] = True
 
     def clean_password2(self):
+        """Assure that password1 and password2 are the same"""
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError(
-             _('The two password fields didn’t match.'),
-            code="password_mismatch")
+                _('The two password fields didn’t match.'),
+                code="password_mismatch")
         return password2
 
     def _post_clean(self):
@@ -49,6 +54,7 @@ class CustomUserCreationForm(forms.ModelForm):
                 self.add_error('password2', error)
 
     def save(self, commit=True):
+        """Create a new User with the form informations"""
         user = User.objects.create_user(
             self.cleaned_data["username"],
             self.cleaned_data["email"],

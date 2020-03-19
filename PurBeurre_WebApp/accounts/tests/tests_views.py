@@ -1,5 +1,3 @@
-import pdb
-
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -7,6 +5,7 @@ from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 
 def redirected_to_myaccount(instance, response):
+    """Test if a user is authenticated and redirected to 'my account'"""
     instance.assertTrue(response.wsgi_request.user.is_authenticated)
     instance.assertRedirects(
         response, "/accounts/myaccount/",
@@ -15,18 +14,15 @@ def redirected_to_myaccount(instance, response):
 class CreateTestCase(TestCase):
     def setUp(self):
         self.user_info = {
-                "username": "test_user",
-                "email": "user@test.com",
-                "password1": "test_user_password",
-                "password2": "test_user_password",
-                "first_name": "Paul"}
+            "username": "test_user",
+            "email": "user@test.com",
+            "password1": "test_user_password",
+            "password2": "test_user_password",
+            "first_name": "Paul"}
 
-    def tearDown(self):
-        for user in User.objects.all():
-            user.delete()
 
     # test create page returns 200 if user is not logged
-    def test_get_create_returns_200(self):
+    def test_get_create_unlogged_user(self):
         response = self.client.get(reverse("accounts:create"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'id="create_form"')
@@ -35,7 +31,7 @@ class CreateTestCase(TestCase):
     def test_get_create_logged_user(self):
         username = "test_user"
         password = "test_user_password"
-        user = User.objects.create_user(
+        User.objects.create_user(
             username=username,
             email="user@test.com",
             password=password)
@@ -43,7 +39,7 @@ class CreateTestCase(TestCase):
         response = self.client.get(reverse("accounts:create"))
         self.assertNotContains(response, 'id="create_form"')
 
-    # test wrong password
+    # test unmatch password
     def test_unmatch_password(self):
         self.user_info["password2"] = "unmatch_password"
         response = self.client.post(reverse("accounts:create"), self.user_info)
@@ -62,20 +58,18 @@ class CreateTestCase(TestCase):
 
 
 class MyAccountTestCase(TestCase):
+    """Test the view 'accounts:my_account'"""
     def setUp(self):
         self.user_info = {
-                "username": "test_user",
-                "email": "user@test.com",
-                "password": "test_user_password",
-                "first_name": "Paul"}
+            "username": "test_user",
+            "email": "user@test.com",
+            "password": "test_user_password",
+            "first_name": "Paul"}
         self.user = User.objects.create_user(**self.user_info)
 
-    def tearDown(self):
-        for user in User.objects.all():
-            user.delete()
 
     # test a user not logged is redirected
-    def test_not_logged_user(self):
+    def test_unlogged_user(self):
         response = self.client.get(reverse("accounts:my_account"))
         self.assertRedirects(response, "/accounts/login/")
 
@@ -84,7 +78,7 @@ class MyAccountTestCase(TestCase):
         self.client.login(
             username=self.user.username, password=self.user_info["password"])
         response = self.client.get(reverse("accounts:my_account"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.user.first_name)
 
     # test a user without first name
@@ -94,23 +88,20 @@ class MyAccountTestCase(TestCase):
         self.client.login(
             username=self.user.username, password=self.user_info["password"])
         response = self.client.get(reverse("accounts:my_account"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Anonyme")
 
 class LoginTestCase(TestCase):
     def setUp(self):
         self.user_info = {
-                "username": "test_user",
-                "email": "user@test.com",
-                "password": "test_user_password",
-                "first_name": "Paul"}
+            "username": "test_user",
+            "email": "user@test.com",
+            "password": "test_user_password",
+            "first_name": "Paul"}
         self.user = User.objects.create_user(**self.user_info)
 
-    def tearDown(self):
-        self.user.delete()
-
     # test login page returns 200 if user is not logged
-    def test_get_login_returns_200(self):
+    def test_get_login_unlogged_user(self):
         response = self.client.get(reverse("accounts:login"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'id="login_form"')

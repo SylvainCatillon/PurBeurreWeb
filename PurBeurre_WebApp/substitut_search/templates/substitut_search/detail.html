@@ -3,7 +3,7 @@
 
 {% block content %}
 <section class="page-section bg-primary min-vh-100" id="detail">
-  {% include 'substitut_search/product_banner.html' %}
+  {% include 'substitut_search/product_banner.html' with image=product.image title=product.name %}
   <div class="container">
     <div class="row text-center justify-content-around">
       <div class="col-5 rounded bg-light h4 my-5">Nutriscore<br>

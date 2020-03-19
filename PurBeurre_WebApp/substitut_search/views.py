@@ -6,10 +6,12 @@ from .models import Product
 def search(request):
     query = request.GET.get("query")
     if not query:
+        query = "Produits aléatoires"
         products = Product.objects.order_by('?')[:12]
     else:
         products = Product.objects.filter(name__icontains=query)[:12]
-    return render(request, "substitut_search/search.html", {"products": products})
+    context = {"products": products, "query": query}
+    return render(request, "substitut_search/search.html", context)
 
 def find(request):
     product_id = request.GET.get("product_id")

@@ -21,13 +21,11 @@
           {% if product in user.profile.favories.all %}
           <p class="mt-2">Produit déjà sauvegardé</p>
           {% else %}
-          <div class="save_div">
-            <form class="save_form form-inline" action="{% url 'substitut:favories' %}">
-              {% csrf_token %}
-              <input type="hidden" class="hidden" value="{{ product.id }}" name="product_id">
-              <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-save mr-3"></i>Sauvegarder</button>
-            </form>
-          </div>
+          <form class="save_form form-inline" action="{% url 'substitut:favories' %}">
+            {% csrf_token %}
+            <input type="hidden" class="hidden" value="{{ product.id }}" name="product_id">
+            <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-save mr-3"></i>Sauvegarder</button>
+          </form>
           {% endif %}
         {% endif %}
       </div>

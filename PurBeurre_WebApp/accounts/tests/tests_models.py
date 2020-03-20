@@ -16,7 +16,7 @@ class ProfileCreation(TestCase):
 
     def test_profile_creation(self):
         """Test if a user and a profile are created"""
-        user = screate_user()
+        user = create_user()
         self.assertIsInstance(user, User)
         self.assertIsInstance(user.profile, Profile)
         self.assertEqual(user.profile.__str__(), user.username)

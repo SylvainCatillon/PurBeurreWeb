@@ -16,13 +16,13 @@
             </form>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" {% if request.user.is_authenticated %}href="{% url 'accounts:my_account' %}" title="Mon compte"{% else %}href="{% url 'accounts:create' %}" title="Créer un compte"{% endif %}><i class="fas fa-user"></i></a>
+            <a class="nav-link js-scroll-trigger" href="{% url user_url %}" title="{{ user_title }}"><i class="fas fa-user"><div class="ml-3 d-inline d-lg-none">{{ user_title }}</div></i></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" title="Mes aliments" {% if request.user.is_authenticated %}href="{% url 'substitut:favories' %}"{% else %} href="{% url 'accounts:create' %}" {% endif %}><img src="{% static 'core/img/carrot.png' %}" title="Mes aliments" alt="carotte"></a>
+            <a class="nav-link js-scroll-trigger" title="{{ fav_title }}" href="{% url fav_url %}"><i class="fas fa-carrot"></i><div class="ml-3 d-inline d-lg-none">{{ fav_title }}</div></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" {% if request.user.is_authenticated %}href="{% url 'accounts:logout' %}" title="Déconnexion"><i class="fas fa-sign-out-alt"{% else %}href="{% url 'accounts:login' %}" title="Connexion"><i class="fas fa-sign-in-alt"{% endif %}></i></a>
+            <a class="nav-link js-scroll-trigger"href="{% url log_url %}" title="{{ log_title }}"><i class="fas {{ log_icone }}"></i><div class="ml-3 d-inline d-lg-none">{{ log_title }}</div></a>
           </li>
         </ul>
       </div>

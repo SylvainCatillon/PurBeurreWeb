@@ -29,7 +29,13 @@
 <body id="page-top">
 
   <!-- Navigation -->
-  {% block nav %}{% include 'core/nav.html' %}{% endblock %}
+  {% block nav %}
+    {% if request.user.is_authenticated %}
+      {% include 'core/nav.html' with user_title='Mon compte' user_url='accounts:my_account' fav_title='Mes aliments' fav_url='substitut:favories' log_title='Déconnexion' log_url='accounts:logout' log_icone='fa-sign-out-alt' %}
+    {% else %}
+      {% include 'core/nav.html' with user_title='Créer un compte' user_url='accounts:create' fav_title='Mes aliments' fav_url='accounts:create' log_title='Connexion' log_url='accounts:login' log_icone='fa-sign-in-alt' %}
+    {% endif %}
+  {% endblock %}
 
   <!-- Content -->
   {% block content %}{% endblock %}

@@ -7,3 +7,11 @@ def index(request):
     Template: "core/index.html"
     """
     return render(request, "core/index.html")
+
+def legal(request):
+    """
+    Display the legal terms
+
+    Template: "core/legal.html"
+    """
+    return render(request, "core/legal.html")

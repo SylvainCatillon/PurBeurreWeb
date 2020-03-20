@@ -42,6 +42,7 @@ class FillDB:
             "json": 1,
             "page_size": nb,
             "page": page}
+        headers = {'user-agent': 'PurBeurre_WebApp - Version 1.0'}
         raw_result = requests.get(
             "https://fr.openfoodfacts.org/cgi/search.pl",
             params=payload)

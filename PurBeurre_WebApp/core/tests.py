@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-class IndexPageTestCase(TestCase):
+class TestIndexPage(TestCase):
 
     # test that index page returns 200
     def test_index_returns_200(self):
